@@ -1,0 +1,27 @@
+# rstudio-mds.significo.dev
+version: "3.9"
+networks:
+  significo:
+    name: "significo"
+services:
+  rstudio:
+    image: "ghcr.io/viluahealthcare/rstudio-mds:4.2.3"
+    container_name: "rstudio-mds"
+    hostname: "rstudio-mds"
+    expose: ["8787/tcp"]
+    ports: ["127.0.0.1:8787:8787/tcp"]
+    volumes:
+      - "/home/ubuntu/rstudio:/etc/rstudio/"
+      - "/home/ubuntu/rstudio/R:/home/ubuntu/rstudio/R"
+    env_file: ["/home/ubuntu/rstudio/.env"]
+    restart: "unless-stopped"
+    networks: ["significo"]
+  nginx:
+    image: "ghcr.io/viluahealthcare/nginx:1.25.1"
+    container_name: "nginx"
+    hostname: "nginx"
+    expose: ["443/tcp"]
+    ports: ["443:443/tcp"]
+    volumes: ["/home/ubuntu/webapp:/webapp"]
+    restart: "unless-stopped"
+    networks: ["significo"]

@@ -1,0 +1,48 @@
+FROM rocker/rstudio:4.2.3  AS RStudio
+
+LABEL \
+  # Authors or maintainers of the image.
+  org.opencontainers.image.authors="Balaji Pothula <balaji@significo.com>" \
+  # Image reference of the image.
+  org.opencontainers.image.base.name="rocker/rstudio:4.2.3" \
+  # Title or name for the image.
+  org.opencontainers.image.title="rstudio-mds:4.2.3" \
+  # Description or summary of the image.
+  org.opencontainers.image.description="Medical Data Science - R 4.2.3, R Studio Server 2023.03.0+386, Python 3.9.17 and Go 1.18"
+
+RUN \
+  # Update the package lists for repositories.
+  apt --yes --quiet update && \
+  # Install the required dependencies.
+  apt --yes --quiet install curl ca-certificates software-properties-common && \
+  # Add the deadsnakes PPA (Personal Package Archive) to system.
+  add-apt-repository --yes --update ppa:deadsnakes/ppa && \
+  # Update the package lists for repositories.
+  apt --yes --quiet update && \
+  # Install specific version of python3.9 and pip.
+  apt --yes --quiet install python3.9 python3-pip && \
+  # Create a force symbolic link.
+  ln --force --symbolic /usr/bin/python3.9 /usr/bin/python && \
+  # Install prefect Python package.
+  pip install --quiet prefect==2.10.15
+
+# Download and install go1.18
+RUN \
+  # Download go1.18.
+  curl --silent --show-error --location --remote-name https://go.dev/dl/go1.18.linux-amd64.tar.gz && \
+  # Extract go zip file into specific directory.
+  tar --extract --gzip --file go1.18.linux-amd64.tar.gz --directory=/usr/local && \
+  # Remove go zip file.
+  rm /go1.18.linux-amd64.tar.gz
+
+# Set Go home environment variable.
+ENV GO_HOME=/usr/local/go
+
+# Set PATH to include Go binaries.
+ENV PATH=$PATH:$GO_HOME/bin
+
+# Creates a mount point for persistent data in the container.
+VOLUME ["/home/ubuntu/rstudio"]
+
+# Container will listen on port 80 using TCP.
+EXPOSE 8787/tcp
