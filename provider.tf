@@ -16,9 +16,8 @@ provider "aws" {
   }
   default_tags {
     tags = {
-      Organization = "Significo"
       Developer      = "Balaji Pothula"
-      DeveloperEmail = "balaji@significo.com"
+      DeveloperEmail = "balaji.pothula@techie.com"
     }
   }
 
