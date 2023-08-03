@@ -43,18 +43,14 @@ output "tags_all" {
   sensitive   = false
 }
 
-/*
-# @Deprecated.
 output "website_endpoint" {
   value       = aws_s3_bucket.generic.website_endpoint
   description = "The website endpoint."
   sensitive   = false
 }
 
-# @Deprecated.
 output "website_domain" {
   value       = aws_s3_bucket.generic.website_domain
   description = "The domain of the website endpoint."
   sensitive   = false
 }
-*/

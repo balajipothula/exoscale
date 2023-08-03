@@ -1,8 +1,8 @@
 # Resource  type : aws_s3_bucket_object
 # Resource  name : generic
 # Attribute name : source
-# Variable  name : source_code
 # Argument       : var.source_code
+# Variable  name : source_code
 resource "aws_s3_bucket_object" "generic" {
 
   bucket  = var.bucket      # Required argument.
